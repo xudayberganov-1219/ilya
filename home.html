@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xush kelibsiz - YuzLogin Boshqaruv Paneli</title>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #059669;
+            --secondary-color: #10b981;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --info-color: #3b82f6;
+            --bg-light: #ffffff;
+            --bg-dark: #0f172a;
+            --card-light: #f1f5f9;
+            --card-dark: #1e293b;
+            --glass-bg-light: rgba(241, 245, 249, 0.8);
+            --glass-bg-dark: rgba(30, 41, 59, 0.8);
+            --text-light: #475569;
+            --text-dark: #f1f5f9;
+            --text-muted-light: #64748b;
+            --text-muted-dark: #94a3b8;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --border-radius: 0.75rem;
+            --border-radius-sm: 0.5rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--card-light) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body.dark-theme {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--card-dark) 100%);
+            color: var(--text-dark);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: var(--glass-bg-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 24px;
+            cursor: pointer;
+            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .dark-theme .theme-toggle {
+            background: var(--glass-bg-dark);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .logout-btn {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            background: var(--glass-bg-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius-sm);
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-light);
+            text-decoration: none;
+            font-family: 'Work Sans', sans-serif;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            background: var(--error-color);
+            color: white;
+        }
+
+        .dark-theme .logout-btn {
+            background: var(--glass-bg-dark);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 24px 24px;
+            text-align: center;
+        }
+
+        .welcome-header {
+            background: var(--glass-bg-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 60px 40px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .dark-theme .welcome-header {
+            background: var(--glass-bg-dark);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .welcome-header h1 {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .welcome-header p {
+            font-size: 1.25rem;
+            color: var(--text-muted-light);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .dark-theme .welcome-header p {
+            color: var(--text-muted-dark);
+        }
+
+        .login-time {
+            font-size: 1rem;
+            color: var(--text-muted-light);
+            opacity: 0.8;
+        }
+
+        .dark-theme .login-time {
+            color: var(--text-muted-dark);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .dashboard-card {
+            background: var(--glass-bg-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 32px;
+            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .dark-theme .dashboard-card {
+            background: var(--glass-bg-dark);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-card h3 {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+
+        .dashboard-card p {
+            color: var(--text-muted-light);
+            line-height: 1.6;
+        }
+
+        .dark-theme .dashboard-card p {
+            color: var(--text-muted-dark);
+        }
+
+        /* Money Rain Animation */
+        .money-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .money {
+            position: absolute;
+            font-size: 24px;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .money:nth-child(odd) {
+            animation-duration: 3s;
+        }
+
+        .money:nth-child(even) {
+            animation-duration: 4s;
+        }
+
+        .money:nth-child(3n) {
+            animation-duration: 2.5s;
+        }
+
+        .money:nth-child(4n) {
+            animation-duration: 3.5s;
+        }
+
+        .money:nth-child(5n) {
+            animation-duration: 2.8s;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 16px 16px;
+            }
+
+            .welcome-header {
+                padding: 40px 24px;
+            }
+
+            .welcome-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .money {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Mavzuni o'zgartirish">🌙</button>
+    <a href="index.html" class="logout-btn">🚪 Chiqish</a>
+
+    <div class="money-container" id="money-container"></div>
+
+    <div class="container">
+        <header class="welcome-header">
+            <h1>🎉 Qaytib kelganingiz bilan!</h1>
+            <p id="user-name">Salom, Foydalanuvchi!</p>
+            <div class="login-time" id="login-time"></div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>🔐 Xavfsiz Kirish</h3>
+                <p>Siz ilg'or yuz tanish texnologiyasi yordamida muvaffaqiyatli kirdingiz. Sizning shaxsingiz yuqori ishonch bilan tasdiqlandi.</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>💰 Pul Yomg'iri</h3>
+                <p>Bayramona pul yomg'iri animatsiyasidan zavqlaning! Bu xavfsiz autentifikatsiya bilan keladigan muvaffaqiyat va farovonlikni ifodalaydi.</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>🚀 Professional Tizim</h3>
+                <p>Ushbu yuz tanish tizimi zamonaviy ilovalar uchun xavfsiz va muammosiz autentifikatsiyani ta'minlash uchun eng so'nggi AI texnologiyasidan foydalanadi.</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>📊 Sessiya Ma'lumotlari</h3>
+                <p>Sizning sessiyangiz faol va xavfsiz. Barcha faoliyatlar xavfsizlik maqsadlarida qayd etiladi. Yuqoridagi tugma orqali istalgan vaqtda chiqishingiz mumkin.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let moneyInterval;
+        const moneyEmojis = ['💵', '💴', '💶', '💷', '💰', '🪙', '💎'];
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            body.classList.toggle('dark-theme');
+            
+            if (body.classList.contains('dark-theme')) {
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.textContent = '☀️';
+            }
+        }
+
+        function createMoney() {
+            const money = document.createElement('div');
+            money.className = 'money';
+            money.textContent = moneyEmojis[Math.floor(Math.random() * moneyEmojis.length)];
+            
+            // Random horizontal position
+            money.style.left = Math.random() * 100 + '%';
+            
+            // Random animation duration
+            const duration = 2 + Math.random() * 3; // 2-5 seconds
+            money.style.animationDuration = duration + 's';
+            
+            // Random delay
+            money.style.animationDelay = Math.random() * 2 + 's';
+            
+            document.getElementById('money-container').appendChild(money);
+            
+            // Remove money after animation
+            setTimeout(() => {
+                if (money.parentNode) {
+                    money.parentNode.removeChild(money);
+                }
+            }, (duration + 2) * 1000);
+        }
+
+        function startMoneyRain() {
+            // Create money every 200-500ms
+            moneyInterval = setInterval(() => {
+                createMoney();
+            }, 200 + Math.random() * 300);
+        }
+
+        function stopMoneyRain() {
+            if (moneyInterval) {
+                clearInterval(moneyInterval);
+            }
+        }
+
+        function loadUserInfo() {
+            const userName = localStorage.getItem('loggedInUser') || 'Foydalanuvchi';
+            const loginTime = localStorage.getItem('loginTime');
+            
+            document.getElementById('user-name').textContent = `Salom, ${userName}!`;
+            
+            if (loginTime) {
+                const loginDate = new Date(loginTime);
+                const formattedTime = loginDate.toLocaleString();
+                document.getElementById('login-time').textContent = `Kirish vaqti: ${formattedTime}`;
+            }
+        }
+
+        function checkAuth() {
+            const userName = localStorage.getItem('loggedInUser');
+            if (!userName) {
+                // Redirect to login if not authenticated
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuth()) return;
+            
+            loadTheme();
+            loadUserInfo();
+            startMoneyRain();
+            
+            // Welcome message
+            setTimeout(() => {
+                const userName = localStorage.getItem('loggedInUser') || 'Foydalanuvchi';
+                console.log(`🎉 Boshqaruv paneliga xush kelibsiz, ${userName}!`);
+            }, 1000);
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            stopMoneyRain();
+        });
+
+        // Handle visibility change to pause/resume animation
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopMoneyRain();
+            } else {
+                startMoneyRain();
+            }
+        });
+    </script>
+</body>
+</html>
