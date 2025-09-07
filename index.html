@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional RoboDetector - AI Object Detection</title>
+    <title>YuzLogin - Professional Yuz Tanish Tizimi</title>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -39,22 +39,19 @@
 
         body {
             font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-light);
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--card-light) 100%);
             color: var(--text-light);
             min-height: 100vh;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         body.dark-theme {
-            background: var(--bg-dark);
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--card-dark) 100%);
             color: var(--text-dark);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 24px;
         }
 
         .theme-toggle {
@@ -87,24 +84,30 @@
             border-color: rgba(255, 255, 255, 0.1);
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
-            padding: 40px;
+        .login-container {
             background: var(--card-light);
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow-md);
+            padding: 40px;
+            box-shadow: var(--shadow-xl);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(16px);
         }
 
-        .dark-theme .header {
+        .dark-theme .login-container {
             background: var(--card-dark);
             border-color: rgba(255, 255, 255, 0.1);
         }
 
+        .header {
+            margin-bottom: 32px;
+        }
+
         .header h1 {
             font-family: 'Work Sans', sans-serif;
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
@@ -124,81 +127,53 @@
             color: var(--text-muted-dark);
         }
 
-        .settings {
-            background: var(--card-light);
-            padding: 32px;
-            border-radius: var(--border-radius);
+        .video-container {
+            position: relative;
             margin-bottom: 24px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .dark-theme .settings {
-            background: var(--card-dark);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .settings h3 {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 24px;
-            color: var(--primary-color);
-        }
-
-        .setting-item {
-            margin-bottom: 20px;
-        }
-
-        .setting-item label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted-light);
-        }
-
-        .dark-theme .setting-item label {
-            color: var(--text-muted-dark);
-        }
-
-        .setting-item input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid transparent;
             border-radius: var(--border-radius-sm);
-            background: var(--bg-light);
-            color: inherit;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
         }
 
-        .setting-item input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        #webcam {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background: #000;
         }
 
-        .dark-theme .setting-item input {
-            background: var(--bg-dark);
-            border-color: rgba(255, 255, 255, 0.1);
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.125rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-overlay.show {
+            opacity: 1;
         }
 
         .controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 16px;
-            margin-bottom: 24px;
         }
 
         .btn {
             padding: 16px 24px;
             border: none;
             border-radius: var(--border-radius-sm);
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             font-family: 'Work Sans', sans-serif;
             cursor: pointer;
@@ -228,16 +203,6 @@
             color: var(--text-dark);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, var(--success-color), var(--secondary-color));
-            color: white;
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning-color), #f97316);
-            color: white;
-        }
-
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: var(--shadow-xl);
@@ -245,6 +210,12 @@
 
         .btn:active {
             transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .status-indicator {
@@ -268,125 +239,6 @@
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-        }
-
-        @media (max-width: 1024px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .video-section {
-            position: relative;
-            background: var(--card-light);
-            border-radius: var(--border-radius);
-            padding: 24px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .dark-theme .video-section {
-            background: var(--card-dark);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .fps-counter {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 12px;
-            border-radius: var(--border-radius-sm);
-            font-size: 12px;
-            font-weight: 600;
-            font-family: 'Work Sans', sans-serif;
-            z-index: 10;
-            backdrop-filter: blur(8px);
-        }
-
-        #webcam {
-            width: 100%;
-            height: auto;
-            border-radius: var(--border-radius-sm);
-            background: #000;
-            box-shadow: var(--shadow-md);
-        }
-
-        #overlay-canvas {
-            position: absolute;
-            top: 24px;
-            left: 24px;
-            pointer-events: none;
-            border-radius: var(--border-radius-sm);
-        }
-
-        .results-section {
-            background: var(--card-light);
-            padding: 24px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-md);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .dark-theme .results-section {
-            background: var(--card-dark);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .results-section h3, .results-section h4 {
-            font-family: 'Work Sans', sans-serif;
-            font-weight: 600;
-            color: var(--primary-color);
-            margin-bottom: 16px;
-        }
-
-        .current-detection {
-            background: rgba(34, 197, 94, 0.1);
-            border: 2px solid rgba(34, 197, 94, 0.3);
-            border-radius: var(--border-radius-sm);
-            padding: 20px;
-            margin-bottom: 24px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .detection-history {
-            max-height: 320px;
-            overflow-y: auto;
-            padding: 16px;
-            background: var(--bg-light);
-            border-radius: var(--border-radius-sm);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .dark-theme .detection-history {
-            background: var(--bg-dark);
-        }
-
-        .history-item {
-            padding: 12px;
-            margin-bottom: 8px;
-            background: var(--card-light);
-            border-radius: var(--border-radius-sm);
-            font-size: 13px;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.2s ease;
-        }
-
-        .dark-theme .history-item {
-            background: var(--card-dark);
-        }
-
-        .history-item:hover {
-            transform: translateX(4px);
-            box-shadow: var(--shadow-md);
         }
 
         .message {
@@ -422,130 +274,145 @@
             background: linear-gradient(135deg, var(--info-color), #2563eb);
         }
 
-        .message.warning {
-            background: linear-gradient(135deg, var(--warning-color), #d97706);
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        ::-webkit-scrollbar-track {
+        .api-settings {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 24px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-theme .api-settings {
+            background: var(--bg-dark);
+        }
+
+        .api-settings h3 {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+
+        .setting-item {
+            margin-bottom: 16px;
+        }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-muted-light);
+        }
+
+        .dark-theme .setting-item label {
+            color: var(--text-muted-dark);
+        }
+
+        .setting-item input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid transparent;
+            border-radius: var(--border-radius-sm);
             background: var(--card-light);
-            border-radius: 4px;
+            color: inherit;
+            font-size: 14px;
+            transition: all 0.2s ease;
         }
 
-        .dark-theme ::-webkit-scrollbar-track {
+        .setting-item input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .dark-theme .setting-item input {
             background: var(--card-dark);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 4px;
-        }
+        @media (max-width: 640px) {
+            .login-container {
+                padding: 24px;
+                margin: 20px;
+            }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--secondary-color);
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            #webcam {
+                height: 250px;
+            }
         }
     </style>
 </head>
 <body>
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Temani almashtirish">🌙</button>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Mavzuni o'zgartirish">🌙</button>
 
-    <div class="container">
+    <div class="login-container">
         <header class="header">
-            <h1>🤖 RoboDetector AI</h1>
-            <p>Professional Object Detection with YOLOv11 & Roboflow Integration</p>
+            <h1>🔐 YuzLogin</h1>
+            <p>Professional Yuz Tanish Tizimi</p>
         </header>
 
-        <div class="settings">
-            <h3>⚙️ API Configuration</h3>
+        <div class="api-settings">
+            <h3>⚙️ API Sozlamalari</h3>
             <div class="setting-item">
-                <label for="api-key">API Key</label>
-                <input type="text" id="api-key" value="ppDmV954vp4WVJIQCNEO" placeholder="Enter your Roboflow API key">
+                <label for="api-key">Roboflow API Kaliti</label>
+                <input type="text" id="api-key" value="ppDmV954vp4WVJIQCNEO" placeholder="API kalitingizni kiriting">
             </div>
             <div class="setting-item">
-                <label for="model-id">Model ID</label>
-                <input type="text" id="model-id" value="robodetector-cdzsd/2" placeholder="Model identifier">
+                <label for="model-id">Yuz Tanish Model ID</label>
+                <input type="text" id="model-id" value="face-recognition-model/1" placeholder="Model identifikatori">
             </div>
-            <div class="setting-item">
-                <label for="confidence-threshold">Confidence Threshold: <span id="confidence-value">60%</span></label>
-                <input type="range" id="confidence-threshold" min="10" max="90" value="60">
+        </div>
+
+        <div class="video-container">
+            <video id="webcam" autoplay muted playsinline></video>
+            <div class="video-overlay" id="video-overlay">
+                <span>📷 Boshlash uchun "Kamerani Yoqish" tugmasini bosing</span>
             </div>
         </div>
 
         <div class="controls">
-            <button class="btn btn-primary" onclick="toggleCamera('user')">
+            <button class="btn btn-secondary" onclick="toggleCamera()" id="camera-btn">
                 <span class="status-indicator inactive" id="camera-status"></span>
-                📱 Front Camera
+                📱 Kamerani Yoqish
             </button>
-            <button class="btn btn-secondary" onclick="toggleCamera('environment')">
-                <span class="status-indicator inactive" id="back-camera-status"></span>
-                📷 Back Camera
+            
+            <button class="btn btn-primary" onclick="loginWithFace()" id="login-btn" disabled>
+                <span id="login-icon">🔍</span>
+                Yuz bilan Kirish
             </button>
-            <button class="btn btn-success" onclick="toggleDetection()">
-                <span class="status-indicator inactive" id="detection-status"></span>
-                🔍 Start Detection
-            </button>
-            <button class="btn btn-warning" onclick="toggleAudio()">
-                <span class="status-indicator active" id="audio-status"></span>
-                🔊 Audio
-            </button>
-        </div>
-
-        <div class="main-content">
-            <div class="video-section">
-                <div class="fps-counter">
-                    FPS: <span id="fps-display">0</span>
-                </div>
-                <video id="webcam" autoplay muted playsinline></video>
-                <canvas id="overlay-canvas"></canvas>
-            </div>
-
-            <div class="results-section">
-                <h3>📊 Detection Results</h3>
-                
-                <div class="current-detection" id="current-detection" style="display: none;">
-                    <div id="detection-result">No objects detected yet...</div>
-                </div>
-
-                <h4>📈 Recent Detections</h4>
-                <div class="detection-history" id="detection-history">
-                    <p style="opacity: 0.6; text-align: center;">No detections yet...</p>
-                </div>
-
-                <div style="margin-top: 24px;">
-                    <button class="btn btn-warning" onclick="captureSnapshot()" style="width: 100%;">
-                        📸 Capture Snapshot
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
         let webcamStream = null;
-        let isDetecting = false;
-        let audioEnabled = true;
-        let detectionHistory = [];
-        let frameCount = 0;
-        let lastFpsTime = performance.now();
-        let animationId = null;
         let isProcessing = false;
-        let fpsInterval = null;
-
         let apiKey = 'ppDmV954vp4WVJIQCNEO';
-        let modelId = 'robodetector-cdzsd/2';
-        let confidenceThreshold = 0.6;
+        let modelId = 'face-recognition-model/1';
 
         const video = document.getElementById('webcam');
-        const canvas = document.getElementById('overlay-canvas');
-        const ctx = canvas.getContext('2d');
-
-        const colors = [
-            '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57',
-            '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#ff9f43'
-        ];
+        const videoOverlay = document.getElementById('video-overlay');
+        const cameraBtn = document.getElementById('camera-btn');
+        const loginBtn = document.getElementById('login-btn');
 
         function toggleTheme() {
             const body = document.body;
@@ -589,7 +456,7 @@
             setTimeout(() => {
                 messageDiv.classList.remove('show');
                 setTimeout(() => messageDiv.remove(), 400);
-            }, 3000);
+            }, 4000);
         }
 
         function updateStatusIndicator(id, isActive) {
@@ -599,57 +466,29 @@
             }
         }
 
-        function startFpsCounter() {
-            frameCount = 0;
-            lastFpsTime = performance.now();
-            
-            if (fpsInterval) {
-                clearInterval(fpsInterval);
-            }
-            
-            fpsInterval = setInterval(() => {
-                const now = performance.now();
-                const elapsed = now - lastFpsTime;
-                const fps = Math.round((frameCount * 1000) / elapsed);
-                
-                document.getElementById('fps-display').textContent = fps;
-                
-                frameCount = 0;
-                lastFpsTime = now;
-            }, 1000);
-        }
-
-        function stopFpsCounter() {
-            if (fpsInterval) {
-                clearInterval(fpsInterval);
-                fpsInterval = null;
-            }
-            document.getElementById('fps-display').textContent = '0';
-        }
-
-        async function toggleCamera(facingMode = 'user') {
+        async function toggleCamera() {
             if (webcamStream) {
+                // Stop camera
                 webcamStream.getTracks().forEach(track => track.stop());
                 webcamStream = null;
                 video.srcObject = null;
                 
-                if (ctx) {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }
+                videoOverlay.classList.add('show');
+                videoOverlay.innerHTML = '<span>📷 Boshlash uchun "Kamerani Yoqish" tugmasini bosing</span>';
                 
-                stopFpsCounter();
+                cameraBtn.innerHTML = '<span class="status-indicator inactive" id="camera-status"></span>📱 Kamerani Yoqish';
+                loginBtn.disabled = true;
                 updateStatusIndicator('camera-status', false);
-                updateStatusIndicator('back-camera-status', false);
                 
-                showMessage('Kamera o\'chirildi 📴', 'info');
+                showMessage('Kamera to\'xtatildi 📴', 'info');
                 return;
             }
 
             try {
-                showMessage('Kameraga ulanmoqda... ⏳', 'info');
+                showMessage('Kamera ishga tushirilmoqda... ⏳', 'info');
 
                 if (!navigator.mediaDevices?.getUserMedia) {
-                    throw new Error('Bu brauzer kamerani qo\'llab-quvvatlamaydi');
+                    throw new Error('Ushbu brauzerda kamera qo\'llab-quvvatlanmaydi');
                 }
 
                 const constraints = {
@@ -657,7 +496,7 @@
                         width: { ideal: 640 },
                         height: { ideal: 480 },
                         frameRate: { ideal: 30 },
-                        facingMode: facingMode
+                        facingMode: 'user'
                     },
                     audio: false
                 };
@@ -673,21 +512,12 @@
 
                 await video.play();
 
-                canvas.width = video.videoWidth || 640;
-                canvas.height = video.videoHeight || 480;
+                videoOverlay.classList.remove('show');
+                cameraBtn.innerHTML = '<span class="status-indicator active" id="camera-status"></span>📴 Kamerani To\'xtatish';
+                loginBtn.disabled = false;
+                updateStatusIndicator('camera-status', true);
 
-                startFpsCounter();
-
-                if (facingMode === 'user') {
-                    updateStatusIndicator('camera-status', true);
-                    updateStatusIndicator('back-camera-status', false);
-                } else {
-                    updateStatusIndicator('camera-status', false);
-                    updateStatusIndicator('back-camera-status', true);
-                }
-
-                const cameraType = facingMode === 'user' ? 'Old kamera' : 'Orqa kamera';
-                showMessage(`✅ ${cameraType} yoqildi!`, 'success');
+                showMessage('✅ Kamera muvaffaqiyatli ishga tushdi!', 'success');
 
             } catch (error) {
                 if (webcamStream) {
@@ -696,9 +526,9 @@
                 }
                 
                 updateStatusIndicator('camera-status', false);
-                updateStatusIndicator('back-camera-status', false);
+                loginBtn.disabled = true;
                 
-                let errorMessage = '❌ Kamera xatoligi: ';
+                let errorMessage = '❌ Kamera xatosi: ';
                 if (error.name === 'NotAllowedError') {
                     errorMessage += 'Ruxsat berilmadi';
                 } else if (error.name === 'NotFoundError') {
@@ -711,236 +541,89 @@
             }
         }
 
-        async function toggleDetection() {
-            if (!webcamStream) {
-                showMessage('❌ Avval kamerani yoqing!', 'error');
+        async function loginWithFace() {
+            if (!webcamStream || isProcessing) {
+                showMessage('❌ Iltimos, avval kamerani yoqing!', 'error');
                 return;
             }
 
-            if (isDetecting) {
-                isDetecting = false;
-                if (animationId) {
-                    cancelAnimationFrame(animationId);
-                    animationId = null;
-                }
-                updateStatusIndicator('detection-status', false);
-                showMessage('Aniqlash to\'xtatildi ⏹️', 'info');
-                return;
-            }
-
-            isDetecting = true;
-            updateStatusIndicator('detection-status', true);
-            showMessage('Aniqlash boshlandi 🔍', 'success');
-            
-            processFrame();
-        }
-
-        async function processFrame() {
-            if (!isDetecting || !webcamStream) return;
-
-            frameCount++;
-
-            if (frameCount % 5 === 0 && !isProcessing) {
-                isProcessing = true;
-                
-                try {
-                    await detectObjects();
-                } catch (error) {
-                    console.error('Detection error:', error);
-                } finally {
-                    isProcessing = false;
-                }
-            }
-
-            if (isDetecting) {
-                animationId = requestAnimationFrame(processFrame);
-            }
-        }
-
-        async function detectObjects() {
-            if (!video.videoWidth || !video.videoHeight) return;
-
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = video.videoWidth;
-            tempCanvas.height = video.videoHeight;
-            
-            tempCtx.drawImage(video, 0, 0);
-            
-            const blob = await new Promise(resolve => tempCanvas.toBlob(resolve, 'image/jpeg', 0.8));
-            
-            const formData = new FormData();
-            formData.append('file', blob, 'image.jpg');
+            isProcessing = true;
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<div class="loading-spinner"></div> Qayta ishlanmoqda...';
 
             try {
-                const response = await fetch(`https://serverless.roboflow.com/${modelId}?api_key=${apiKey}&confidence=${confidenceThreshold}`, {
-                    method: 'POST',
-                    body: formData
-                });
+                showMessage('Yuz surati olinmoqda va tahlil qilinmoqda... 🔍', 'info');
+
+                // Capture frame from video
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                ctx.drawImage(video, 0, 0);
+                
+                // Convert to blob
+                const blob = await new Promise(resolve => 
+                    canvas.toBlob(resolve, 'image/jpeg', 0.8)
+                );
+                
+                // Send to Roboflow API
+                const formData = new FormData();
+                formData.append('file', blob, 'face.jpg');
+
+                const response = await fetch(
+                    `https://detect.roboflow.com/${modelId}?api_key=${apiKey}&confidence=0.9`, 
+                    {
+                        method: 'POST',
+                        body: formData
+                    }
+                );
 
                 if (!response.ok) {
-                    throw new Error(`API xatoligi: ${response.status}`);
+                    throw new Error(`API Error: ${response.status}`);
                 }
 
                 const result = await response.json();
                 
+                // Check for face detection with >90% confidence
                 if (result.predictions && result.predictions.length > 0) {
-                    processDetectionResults(result.predictions);
-                } else {
-                    clearDetections();
+                    const bestPrediction = result.predictions
+                        .sort((a, b) => b.confidence - a.confidence)[0];
+                    
+                    if (bestPrediction.confidence >= 0.9) {
+                        // Success - redirect to home page
+                        const userName = bestPrediction.class || 'Foydalanuvchi';
+                        localStorage.setItem('loggedInUser', userName);
+                        localStorage.setItem('loginTime', new Date().toISOString());
+                        
+                        showMessage(`✅ Xush kelibsiz ${userName}! Yo'naltirilmoqda...`, 'success');
+                        
+                        setTimeout(() => {
+                            window.location.href = 'home.html';
+                        }, 2000);
+                        
+                        return;
+                    }
                 }
+                
+                // No match found
+                showMessage('❌ Yuz tanilmadi. Iltimos, qayta urinib ko\'ring.', 'error');
 
             } catch (error) {
-                console.error('API xatoligi:', error);
-                showMessage('❌ API bilan bog\'lanishda xatolik', 'error');
+                console.error('Login error:', error);
+                showMessage('❌ Kirish muvaffaqiyatsiz. API sozlamalarini tekshiring.', 'error');
+            } finally {
+                isProcessing = false;
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<span id="login-icon">🔍</span> Yuz bilan Kirish';
             }
         }
 
-        function processDetectionResults(predictions) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const validPredictions = predictions.filter(pred => pred.confidence >= confidenceThreshold);
-            
-            if (validPredictions.length === 0) {
-                clearDetections();
-                return;
-            }
-
-            const topPredictions = validPredictions
-                .sort((a, b) => b.confidence - a.confidence)
-                .slice(0, 5);
-
-            topPredictions.forEach((prediction, index) => {
-                const color = colors[index % colors.length];
-                drawBoundingBox(prediction, color);
-            });
-
-            const topPrediction = topPredictions[0];
-            displayDetectionResult(topPrediction, validPredictions.length);
-
-            if (audioEnabled) {
-                speakDetection(topPrediction.class);
-            }
-
-            addToHistory(topPrediction, validPredictions.length);
-        }
-
-        function drawBoundingBox(prediction, color) {
-            const scaleX = canvas.width / video.videoWidth;
-            const scaleY = canvas.height / video.videoHeight;
-            
-            const x = (prediction.x - prediction.width / 2) * scaleX;
-            const y = (prediction.y - prediction.height / 2) * scaleY;
-            const width = prediction.width * scaleX;
-            const height = prediction.height * scaleY;
-
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 3;
-            ctx.strokeRect(x, y, width, height);
-
-            const label = `${prediction.class} (${Math.round(prediction.confidence * 100)}%)`;
-            ctx.font = '14px Work Sans';
-            const textWidth = ctx.measureText(label).width;
-            
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y - 25, textWidth + 10, 20);
-
-            ctx.fillStyle = 'white';
-            ctx.fillText(label, x + 5, y - 10);
-        }
-
-        function displayDetectionResult(prediction, totalCount) {
-            const currentDetection = document.getElementById('current-detection');
-            const detectionResult = document.getElementById('detection-result');
-            
-            currentDetection.style.display = 'block';
-            detectionResult.innerHTML = `
-                <strong>${prediction.class}</strong><br>
-                Ishonch: ${Math.round(prediction.confidence * 100)}%<br>
-                Jami aniqlangan: ${totalCount}
-            `;
-        }
-
-        function clearDetections() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            document.getElementById('current-detection').style.display = 'none';
-        }
-
-        function speakDetection(className) {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(className);
-                utterance.lang = 'uz-UZ';
-                utterance.rate = 0.8;
-                utterance.volume = 0.7;
-                speechSynthesis.speak(utterance);
-            }
-        }
-
-        function addToHistory(prediction, totalCount) {
-            const timestamp = new Date().toLocaleTimeString();
-            const historyItem = {
-                class: prediction.class,
-                confidence: prediction.confidence,
-                timestamp: timestamp,
-                totalCount: totalCount
-            };
-
-            detectionHistory.unshift(historyItem);
-            if (detectionHistory.length > 10) {
-                detectionHistory.pop();
-            }
-
-            updateHistoryDisplay();
-        }
-
-        function updateHistoryDisplay() {
-            const historyContainer = document.getElementById('detection-history');
-            
-            if (detectionHistory.length === 0) {
-                historyContainer.innerHTML = '<p style="opacity: 0.6; text-align: center;">Hali hech narsa aniqlanmadi...</p>';
-                return;
-            }
-
-            historyContainer.innerHTML = detectionHistory.map(item => `
-                <div class="history-item">
-                    <strong>${item.class}</strong> - ${Math.round(item.confidence * 100)}% 
-                    <span style="float: right; opacity: 0.7;">${item.timestamp}</span>
-                </div>
-            `).join('');
-        }
-
-        function toggleAudio() {
-            audioEnabled = !audioEnabled;
-            updateStatusIndicator('audio-status', audioEnabled);
-            
-            const message = audioEnabled ? 'Ovoz yoqildi 🔊' : 'Ovoz o\'chirildi 🔇';
-            showMessage(message, 'info');
-        }
-
-        function captureSnapshot() {
-            if (!webcamStream) {
-                showMessage('❌ Avval kamerani yoqing!', 'error');
-                return;
-            }
-
-            const tempCanvas = document.createElement('canvas');
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = video.videoWidth;
-            tempCanvas.height = video.videoHeight;
-            
-            tempCtx.drawImage(video, 0, 0);
-            
-            const link = document.createElement('a');
-            link.download = `robodetector-${Date.now()}.jpg`;
-            link.href = tempCanvas.toDataURL('image/jpeg');
-            link.click();
-            
-            showMessage('📸 Surat saqlandi!', 'success');
-        }
-
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             loadTheme();
             
+            // Update API settings
             document.getElementById('api-key').addEventListener('input', (e) => {
                 apiKey = e.target.value;
             });
@@ -948,28 +631,16 @@
             document.getElementById('model-id').addEventListener('input', (e) => {
                 modelId = e.target.value;
             });
-            
-            document.getElementById('confidence-threshold').addEventListener('input', (e) => {
-                confidenceThreshold = e.target.value / 100;
-                document.getElementById('confidence-value').textContent = e.target.value + '%';
-            });
 
             updateStatusIndicator('camera-status', false);
-            updateStatusIndicator('back-camera-status', false);
-            updateStatusIndicator('detection-status', false);
-            updateStatusIndicator('audio-status', true);
-
-            showMessage('🚀 RoboDetector tayyor!', 'success');
+            showMessage('🚀 YuzLogin tayyor!', 'success');
         });
 
+        // Cleanup on page unload
         window.addEventListener('beforeunload', () => {
             if (webcamStream) {
                 webcamStream.getTracks().forEach(track => track.stop());
             }
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
-            stopFpsCounter();
         });
     </script>
 </body>
